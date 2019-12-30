@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -138,21 +139,22 @@ public class EditorTrackView extends FrameLayout {
     private void initUIComponent() {
         mLeftThumb = new ImageView(mContext);
         mLeftThumb.setImageResource(R.drawable.ic_progress_left);
-        mLeftThumb.setScaleType(ImageView.ScaleType.FIT_END);
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(SizeUtil.dp2px(mContext, 24), SizeUtil.dp2px(mContext, 40));
-        layoutParams.topMargin = SizeUtil.dp2px(mContext, 5);
+        mLeftThumb.setScaleType(ImageView.ScaleType.FIT_START);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, SizeUtil.dp2px(mContext, 40));
+//        layoutParams.topMargin = SizeUtil.dp2px(mContext, 5);
         mLeftThumb.setLayoutParams(layoutParams);
 
         mRightThumb = new ImageView(mContext);
         mRightThumb.setImageResource(R.drawable.ic_progress_right);
-        mRightThumb.setScaleType(ImageView.ScaleType.FIT_START);
-        layoutParams = new FrameLayout.LayoutParams(SizeUtil.dp2px(mContext, 24), SizeUtil.dp2px(mContext, 40));
+        mRightThumb.setScaleType(ImageView.ScaleType.FIT_END);
+        mRightThumb.setX(mScreenWidth - SizeUtil.dp2px(mContext, 24));
+        layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, SizeUtil.dp2px(mContext, 40));
         mRightThumb.setLayoutParams(layoutParams);
 
         mCursorThumb = new ImageView(mContext);
         mCursorThumb.setBackgroundResource(R.drawable.shape_video_progress_cursor);
-        mCursorThumb.setX(mScreenWidth / 2);
-        mCursorThumb.setTag(Integer.valueOf(mScreenWidth / 2));
+        mCursorThumb.setX(mScreenWidth / 2f);
+        mCursorThumb.setTag(mScreenWidth / 2);
         layoutParams = new FrameLayout.LayoutParams(SizeUtil.dp2px(mContext, 2), ViewGroup.LayoutParams.MATCH_PARENT);
         mCursorThumb.setLayoutParams(layoutParams);
 
@@ -163,6 +165,7 @@ public class EditorTrackView extends FrameLayout {
         mMediaTrackView.setLayoutParams(layoutParams);
         mMediaTrackView.setDrawFakeDivider(true);
         mMediaTrackView.setOnMediaTrackTouchListener(mOnMediaTrackTouchListener);
+
     }
 
     private void addUIComponent() {
@@ -171,30 +174,31 @@ public class EditorTrackView extends FrameLayout {
         addView(mLeftThumb);
         addView(mRightThumb);
         addView(mCursorThumb);
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.clipRect(getLeft(), getTop(), getRight(), getBottom());
-        int index = 0;
-        if (index < mTrackEditEntryList.size()) {
-            TrackEditEntry entry = mTrackEditEntryList.get(index);
-            Rect rect = entry.getRect();
-            int left = rect.left;
-            int right = rect.right;
-            setBounds(mBounds, left, rect.top, right, rect.bottom);
-            drawBackground(canvas, mBounds);
-
-            rect = mBounds;
-            for (boolean bool = true;; bool = false) {
-                drawBorder(canvas, rect, bool);
-                index++;
-                if (index == mCurrentTrackIndex) {
-                    break;
-                }
-            }
-        }
+//        canvas.clipRect(getLeft(), getTop(), getRight(), getBottom());
+//        int index = 0;
+//        if (index < mTrackEditEntryList.size()) {
+//            TrackEditEntry entry = mTrackEditEntryList.get(index);
+//            Rect rect = entry.getRect();
+//            int left = rect.left;
+//            int right = rect.right;
+//            setBounds(mBounds, left, rect.top, right, rect.bottom);
+//            drawBackground(canvas, mBounds);
+//
+//            rect = mBounds;
+//            for (boolean bool = true;; bool = false) {
+//                drawBorder(canvas, rect, bool);
+//                index++;
+//                if (index == mCurrentTrackIndex) {
+//                    break;
+//                }
+//            }
+//        }
 
     }
 
